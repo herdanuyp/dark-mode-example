@@ -19,4 +19,6 @@ function Ideas() {
   )
 }
 
-export default Ideas
+const MemorizedIdeas = React.memo(Ideas)
+
+export default MemorizedIdeas

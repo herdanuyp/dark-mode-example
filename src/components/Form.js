@@ -1,26 +1,34 @@
 import React, { useContext } from 'react'
 import { useFormik } from 'formik'
 
-import { Form, Label, Input, Button, Text } from '../assets/styles/main'
+import {
+  Form,
+  Label,
+  Input,
+  Button,
+  Text,
+  InnerContainer
+} from '../assets/styles/main'
 import { FormSchema } from '../utils/formValidation'
 import { IdeaContext } from '../context/ideaStateProvider'
-import Ideas from './Idea'
+import MemorizedIdeas from './Idea'
 import Search from './Search'
 
-function FormComponent() {
+function FormContent() {
   const { addIdeaHandler, filteredIdeaHandler, statusHandler } = useContext(
     IdeaContext
   )
+
   const formik = useFormik({
     initialValues: { idea: '', description: '', need: '' },
     validationSchema: FormSchema,
-    onSubmit: (values, { resetForm }) => {
-      addIdeaHandler(values, resetForm)
+    onSubmit: (values) => {
+      addIdeaHandler(values)
     }
   })
 
   return (
-    <>
+    <InnerContainer>
       <Form onSubmit={formik.handleSubmit}>
         <Label htmlFor='idea'>
           Idea/Project
@@ -72,9 +80,10 @@ function FormComponent() {
       </Form>
 
       <Search onLoadingIdeas={filteredIdeaHandler} />
-      <Ideas />
-    </>
+      <MemorizedIdeas />
+    </InnerContainer>
   )
 }
 
+const FormComponent = React.memo(FormContent)
 export default FormComponent

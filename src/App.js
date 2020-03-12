@@ -11,7 +11,9 @@ import NoMatch from './components/NoMatch'
 
 const Dashboard = lazy(() => import('./components/Dashboard'))
 const FormComponent = lazy(() => import('./components/Form'))
+
 const Loading = () => <div>loading...</div>
+
 function App() {
   const { location } = useRouter()
   const transitions = useTransition(location, (location) => location.pathname, {

@@ -5,6 +5,7 @@ const Search = React.memo((props) => {
   const { onLoadingIdeas } = props
   const [enteredFilter, setEnteredFilter] = useState('')
   const inputRef = useRef()
+
   console.log('RENDERING SEARCH')
 
   useEffect(() => {

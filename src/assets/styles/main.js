@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 
-export const Form = styled.form`
+export const InnerContainer = styled.div`
   width: 300px;
+  margin: 0 auto;
+  overflow: hidden;
+`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
-  overflow: hidden;
 `
 
 export const Input = styled.input`

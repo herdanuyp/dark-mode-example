@@ -1,5 +1,6 @@
-import React, { useReducer, createContext, useCallback } from 'react'
-import Swal from 'sweetalert2'
+import React, { useReducer, createContext, useCallback, useEffect } from 'react'
+
+import useHttp from '../hooks/http'
 
 const IdeaContext = createContext()
 
@@ -9,144 +10,63 @@ const ideaReducer = (currentIdeaState, action) => {
       return action.ideas
 
     case 'ADD':
-      return [...currentIdeaState.ideaState, action.idea]
+      return [...currentIdeaState, action.idea]
 
     case 'DELETE':
-      return currentIdeaState.ideaState.filter((idea) => idea.id !== action.id)
+      return currentIdeaState.filter((idea) => idea.id !== action.id)
 
     default:
       throw new Error(`Unhandled action type ${action.type}`)
   }
 }
 
-const httpReducer = (currentHttpState, action) => {
-  switch (action.type) {
-    case 'ERROR': {
-      return {
-        ...currentHttpState,
-        status: 'rejected',
-        error: action.errorMessage
-      }
-    }
-
-    case 'SUCCESS': {
-      return {
-        ...currentHttpState,
-        status: 'resolved'
-      }
-    }
-
-    case 'STARTED': {
-      return {
-        ...currentHttpState,
-        status: 'pending'
-      }
-    }
-
-    default: {
-      throw new Error(`Unhandled HTTP action type: ${action.type}`)
-    }
-  }
-}
-
 function IdeaProvider({ children }) {
   const [ideaState, dispatch] = useReducer(ideaReducer, [])
-  const [httpState, dispatchHttp] = useReducer(httpReducer, {
-    status: 'idle',
-    error: null
-  })
-  // const [ideaState, setIdeaState] = useState([])
-  // const [status, dispatchHttp]{ = useState(}'idle')
-  // const [error, setError] = useState()
+  const { status, error, data, sendRequest, helper, identifier } = useHttp()
 
-  const addIdeaHandler = useCallback((value, resetForm) => {
-    dispatchHttp({ type: 'STARTED' })
-    fetch(process.env.REACT_APP_DUMMY_BACKEND + '/ideas.json', {
-      method: 'POST',
-      body: JSON.stringify(value),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        // setIdeaState((prevIdeas) => [
-        //   ...prevIdeas,
-        //   { id: responseData.name, ...value }
-        // ])
+  useEffect(() => {
+    if (status !== 'pending' && !error && identifier === 'REMOVE_IDEA') {
+      dispatch({ type: 'DELETE', id: helper })
+    } else if (status !== 'pending' && !error && identifier === 'ADD_IDEA') {
+      dispatch({ type: 'ADD', idea: { id: data.name, ...helper } })
+    }
+  }, [data, helper, identifier, status, error])
 
-        dispatch({ type: 'ADD', idea: { id: responseData.name, ...value } })
+  const addIdeaHandler = useCallback(
+    (value) => {
+      sendRequest(
+        `${process.env.REACT_APP_DUMMY_BACKEND}/ideas.json`,
+        'POST',
+        JSON.stringify(value),
+        value,
+        'ADD_IDEA'
+      )
+    },
+    [sendRequest]
+  )
 
-        Swal.fire({
-          title: `Yeay, ideas is submitted`,
-          icon: 'success',
-          showClass: {
-            popup: 'animated fadeInDown faster'
-          },
-          hideClass: {
-            popup: 'animated fadeOutUp faster'
-          }
-        })
-
-        resetForm({ value })
-        dispatchHttp({ type: 'SUCCESS' })
-      })
-      .catch((error) => {
-        dispatchHttp({ type: 'ERROR', errorMessage: error.message })
-        // setError(error.message)
-        Swal.fire({
-          title: `Ooops, error happened!
-        ${error.message}`,
-          icon: 'error',
-          showClass: {
-            popup: 'animated fadeInDown faster'
-          },
-          hideClass: {
-            popup: 'animated fadeOutUp faster'
-          }
-        })
-      })
-  }, [])
-
-  const removeIdeaHandler = useCallback((id) => {
-    dispatchHttp({ type: 'STARTED' })
-    fetch(`${process.env.REACT_APP_DUMMY_BACKEND}/ideas/${id}.json`, {
-      method: 'DELETE'
-    })
-      .then(() => {
-        // setIdeaState((prevIdeas) => prevIdeas.filter((idea) => idea.id !== id))
-        dispatch({ type: 'DELETE', id })
-        dispatchHttp({ type: 'SUCCESS' })
-      })
-      .catch((error) => {
-        // setError(error.message)
-        dispatchHttp({ type: 'ERROR', errorMessage: error.message })
-      })
-  }, [])
+  const removeIdeaHandler = useCallback(
+    (id) => {
+      sendRequest(
+        `${process.env.REACT_APP_DUMMY_BACKEND}/ideas/${id}.json`,
+        'DELETE',
+        null,
+        id,
+        'REMOVE_IDEA'
+      )
+    },
+    [sendRequest]
+  )
 
   const filteredIdeaHandler = useCallback((value) => {
     dispatch({ type: 'SET', ideas: value })
-    // setIdeaState(value)
   }, [])
 
-  const statusHandler = () => {
-    if (httpState.status === 'pending') {
+  const statusHandler = useCallback(() => {
+    if (status === 'pending') {
       return <div>Loading your request...</div>
     }
-
-    if (httpState.status === 'resolved') {
-      return
-    }
-
-    if (httpState.status === 'rejected') {
-      return (
-        <div>
-          <div>Oh no, there was a problem</div>
-          <pre>{httpState.error}</pre>
-        </div>
-      )
-    }
-  }
+  }, [status])
 
   return (
     <IdeaContext.Provider

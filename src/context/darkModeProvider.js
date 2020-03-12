@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from 'react'
+import React, { useEffect, useState, createContext, useCallback } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { lightTheme, darkTheme } from '../assets/styles/theme'
 
@@ -14,13 +14,13 @@ export function DarkModeProvider({ children }) {
     setTheme(mode)
   }
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     if (theme === 'light') {
       setMode('dark')
     } else {
       setMode('light')
     }
-  }
+  }, [theme])
 
   useEffect(() => {
     const localTheme = window.localStorage.getItem('theme')
