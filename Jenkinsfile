@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:latest'
+            image 'node:current-slim'
             args '-p 3000:3000'
         }
     }
@@ -12,6 +12,9 @@ pipeline {
         stage('node version') {
             steps {
                 sh 'node --version'
+            }
+            steps {
+                sh 'npm --version'
             }
         }
     }
