@@ -13,4 +13,7 @@ pipeline {
       }
     }
   }
+  environment{
+    DOCKER_HOST='tcp://docker:2376'
+  }
 }
