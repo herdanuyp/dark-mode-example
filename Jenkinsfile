@@ -15,6 +15,7 @@ pipeline {
 
   }
   environment {
-    REACT_APP_DUMMY_BACKEND = 'https://dummy-backend-hayepe.firebaseio.com'
+    REACT_APP_DUMMY_BACKEND = 'https://dummy-backend-hayepe.firebaseio.com',
+    DOCKER_HOST='tcp://docker:2376'
   }
 }
