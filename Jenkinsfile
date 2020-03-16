@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:lts-alpine3.9'
-            args '-p 3000:3000'
+            args '-p 3002:3000'
         }
     }
     stages {
