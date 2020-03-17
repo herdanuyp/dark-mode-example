@@ -11,17 +11,9 @@ pipeline {
         sh '''
         ls -a
         rm -rf yarn.lock
-        npm config rm https-proxy
-        npm config rm proxy
-        npm config set registry http://registry.npmjs.org/
-        npm config set strict-ssl false
-        npm config ls -l
-        npm install
+        yarn install
         '''
       }
     }
-  }
-  environment {
-    CI = 'true'
   }
 }
