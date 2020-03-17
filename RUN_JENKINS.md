@@ -54,3 +54,9 @@ And then open `localhost:8080` to start using jenkins
   - It is conventional to use port `2376` **when TLS is enabled**, and port `2375` **for un-encrypted communication with the Docker daemon**.
   - With a secured Docker TCP socket, select the Server credentials created previously. Otherwise, select None.
   - Click on Test Connection to confirm your configuration is correct.
+
+---
+
+## References
+
+- Use a remote repository rather than a local repository for the best `Blue Ocean` experience. [link](https://jenkins.io/doc/book/blueocean/creating-pipelines/)
