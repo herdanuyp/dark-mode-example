@@ -40,6 +40,12 @@ node {
     stage('Checkout') {
       checkout scm
     }
+    agent {
+      docker {
+        image 'node:current-slim'
+        args '-p 3100:3000'
+      }
+    }
     stage('Environment') {
       sh 'git --version'
       sh 'node --version'
