@@ -4,6 +4,7 @@ pipeline {
       image 'node:lts-alpine'
       args '-p 3003:3000'
     }
+
   }
   stages {
     stage('Build App') {
@@ -11,9 +12,12 @@ pipeline {
         sh '''
         ls -a
         rm -rf yarn.lock
+        apk add nodejs
+        echo $PATH
         npm install
         '''
       }
     }
+
   }
 }
