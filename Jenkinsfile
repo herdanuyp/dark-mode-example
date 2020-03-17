@@ -42,7 +42,7 @@ node {
     }
     stage('Environment') {
       sh 'git --version'
-      echo "Branch: ${env.BRANCH_NAME}"
+      echo "Branch: ${env}"
       sh 'docker -v'
       sh 'printenv'
     }
