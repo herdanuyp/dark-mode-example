@@ -9,19 +9,16 @@ pipeline {
   stages {
     stage('Environment') {
       steps {
-        sh 'git --version'
         sh 'node --version'
         sh 'npm --version'
-        sh 'yarn --version'
-        sh 'docker -v'
         sh 'printenv'
       }
     }
-    // stage('Build') {
-    //   steps {
-    //     sh 'npm install'
-    //   }
-    // }
+    stage('Build') {
+      steps {
+        sh 'npm install'
+      }
+    }
     // stage('Deliver') {
     //   steps {
     //     sh './jenkins/scripts/deliver.sh'
