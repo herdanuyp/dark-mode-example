@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Build App') {
       steps {
-        ls -a
+        sh 'ls -a'
         sh 'rm -rf yarn.lock'
         sh 'yarn install'
       }
