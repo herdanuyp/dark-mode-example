@@ -13,7 +13,7 @@ pipeline {
         ls -a
         rm -rf yarn.lock
         yarn config set registry https://registry.npmjs.org
-        ping https://registry.npmjs.org
+        ping registry.npmjs.org
         yarn install
         '''
       }
