@@ -2,15 +2,13 @@ pipeline {
   agent {
     docker {
       image 'node:current-slim'
-      args '-p 3100:3000'
+      args '-p 3000:3000'
     }
   }
 
   stages {
     stage('Environment') {
       steps {
-        sh 'node --version'
-        sh 'npm --version'
         sh 'printenv'
       }
     }
