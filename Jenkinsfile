@@ -11,6 +11,7 @@ pipeline {
         sh '''
         ls -a
         rm -rf yarn.lock
+        yarn config set registry https://registry.npmjs.org
         yarn install
         '''
       }
