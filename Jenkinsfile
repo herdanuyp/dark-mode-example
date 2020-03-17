@@ -8,9 +8,11 @@ pipeline {
   stages {
     stage('Build App') {
       steps {
+        sh 'npm config rm proxy'
+        sh 'npm config rm https-proxy'
         sh 'rm -rf yarn.lock'
         sh 'rm -rf node_modules'
-        sh 'yarn install'
+        sh 'yarn install --network-timeout 1000000'
       }
     }
   }
