@@ -18,8 +18,8 @@ pipeline {
                 sh '''
                     ls -al
                     cache_dir="${CACHE_DIR}"
-                    cache_nm="${CACHE_DIR}node_modules"
-                    cache_lock="${CACHE_DIR}yarn.lock"
+                    cache_nm="${CACHE_DIR}/node_modules"
+                    cache_lock="${CACHE_DIR}/yarn.lock"
 
                     if [ ! -d "$cache_dir" ]; then mkdir ${cache_dir}; fi
                     if [ ! -d "$cache_nm" ]; then mkdir ${cache_nm}; fi
@@ -34,13 +34,13 @@ pipeline {
             agent {
                 docker {
                     image 'node:lts-alpine'
-                    args ''
+                    args '-p 3003:3000'
                 }
             }
             steps {
                 sh '''
-                    yarn install
-                    yarn build
+                    npm install
+                    npm run build
                     tar -cvf build.tar build
 
                     ls -al
