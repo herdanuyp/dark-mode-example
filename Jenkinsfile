@@ -15,6 +15,7 @@ pipeline {
         npm config rm proxy
         npm config set registry http://registry.npmjs.org/
         npm config set strict-ssl false
+        npm config ls -l
         npm install
         '''
       }
