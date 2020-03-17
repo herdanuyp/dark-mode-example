@@ -8,9 +8,14 @@ pipeline {
   stages {
     stage('Build App') {
       steps {
-        sh 'ls -a'
-        sh 'rm -rf yarn.lock'
-        sh 'npm install'
+        sh '''
+        ls -a
+        rm -rf yarn.lock
+        npm config rm https-proxy
+        npm config rm proxy
+        npm config set registry http://registry.npmjs.org/
+        npm install
+        '''
       }
     }
   }
