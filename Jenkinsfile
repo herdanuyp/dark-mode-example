@@ -10,7 +10,7 @@ pipeline {
       steps {
         sh 'ls -a'
         sh 'rm -rf yarn.lock'
-        sh 'yarn install'
+        sh 'npm install'
       }
     }
   }
