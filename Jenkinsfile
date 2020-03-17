@@ -12,7 +12,6 @@ pipeline {
         sh '''
         ls -a
         rm -rf yarn.lock
-        apk add nodejs
         echo $PATH
         npm install
         '''
