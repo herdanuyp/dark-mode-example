@@ -9,7 +9,9 @@ pipeline {
   stages {
     stage('Build App') {
       steps {
+        sh 'yarn remove formik'
         sh 'yarn install'
+        sh 'yarn add formik'
       }
     }
 
