@@ -4,6 +4,7 @@ pipeline {
       image 'node:lts-alpine'
       args '-p 3003:3000'
     }
+
   }
   stages {
     stage('Build App') {
@@ -12,9 +13,11 @@ pipeline {
         ls -a
         rm -rf yarn.lock
         yarn config set registry https://registry.npmjs.org
+        ping https://registry.npmjs.org
         yarn install
         '''
       }
     }
+
   }
 }
