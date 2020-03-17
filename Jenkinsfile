@@ -4,17 +4,15 @@ pipeline {
       image 'node:lts-alpine'
       args '-p 3003:3000'
     }
-
   }
   stages {
     stage('Build App') {
       steps {
-        sh 'yarn remove formik'
+        sh 'rm -rf yarn.lock'
+        sh 'rm -rf node_modules'
         sh 'yarn install'
-        sh 'yarn add formik'
       }
     }
-
   }
   environment {
     CI = 'true'
