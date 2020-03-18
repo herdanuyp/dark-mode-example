@@ -4,7 +4,9 @@ pipeline {
       image 'node:lts-alpine'
       args '-p 3003:3000'
     }
-
+  }
+  environment {
+    HOME = "."
   }
   stages {
     stage('Build App') {
@@ -17,8 +19,5 @@ pipeline {
         '''
       }
     }
-  }
-  environment {
-    HOME=.
   }
 }
